@@ -61,10 +61,10 @@ from agglplannerplan import *
 from generate import *
 
 from dummysemanticspredictor import *
-from linearregressionpredictor import *
-from linearregressionpredictor2 import *
-from linearregressionpredictor3 import *
-from dnnpredictor import *
+#from linearregressionpredictor import *
+#from linearregressionpredictor2 import *
+#from linearregressionpredictor3 import *
+#from dnnpredictor import *
 from nopredictor import *
 
 from agglplanner2_utils import *

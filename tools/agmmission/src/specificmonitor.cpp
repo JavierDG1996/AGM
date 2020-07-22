@@ -123,20 +123,24 @@ void SpecificMonitor::readConfig(RoboCompCommonBehavior::ParameterList &params )
 	vector<std::pair<std::string, std::string> > missions;
 	try
 	{
-        string goals_st;
-        configGetString( "","Goals", goals_st, "");
+		string goals_st;
+		configGetString( "","Goals", goals_st, "");
 		goals = strToNumber(goals_st);
 		printf("Goals: %d\n", goals);
 		for (int32_t i=0; i<goals; i++)
 		{
+			printf("iteration %d\n", i);
 			std::ostringstream ostr;
 			ostr.imbue(std::locale("C"));
 			ostr << "Goal";
 			ostr << i + 1;
 			std::string goalDescriptor;
-            std::string xxp;
-            configGetString("", ostr.str(), xxp, "");
-			vector<std::string> result = commaSplit(goalDescriptor);
+			std::string xxp;
+			printf("Variable to read %s\n", ostr.str().c_str());
+ 			configGetString("", ostr.str(), xxp, "");
+			printf("got string %s\n", xxp.c_str());
+			vector<std::string> result = commaSplit(xxp);
+			printf("parts %d\n", (int)result.size());
 			missions.push_back(std::pair<std::string, std::string>(result[0], result[1]));
 			printf("%s: <%s> <%s>\n", ostr.str().c_str(), result[0].c_str(), result[1].c_str());
 		}

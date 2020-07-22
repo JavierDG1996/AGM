@@ -12,7 +12,7 @@ from agglplanningcache import *
 
 from AGMExecutive_monitoring import *
 import xmlModelParser
-
+import distutils.core
 import unicodedata
 
 import pickle
@@ -105,7 +105,6 @@ class PlannerCaller(threading.Thread):
         try: tempStr = unicodedata.normalize('NFKD', tempStr)
         except: pass
         missionStr = open(tempStr, 'r').read()
-        print(type(missionStr), missionStr)
         self.targetId = self.agglplannerclient.getTargetIdentifier(missionStr, self.domainId)
         self.setWork(self.executive.currentModel)
 
@@ -123,9 +122,7 @@ class PlannerCaller(threading.Thread):
                     while True:
                         pend = self.pendingJobs.pop()
                         print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX forceStopPlanning')
-                        print('forzando parada')
                         self.agglplannerclient.forceStopPlanning(pend)
-                        print('forzando parada F')
                     self.pendingJobs.release()
                 except:
                     pass
@@ -287,7 +284,7 @@ class PlannerCaller(threading.Thread):
 
 class Executive(object):
     def __init__(self, agglPath, initialModelPath, initialMissionPath, doNotPlan, executiveTopic, executiveVisualizationTopic, startPlanServer):
-        self.doNotPlan = doNotPlan
+        self.doNotPlan = bool(distutils.util.strtobool(doNotPlan))
         self.startPlanServer = startPlanServer
         self.mutex = threading.RLock()
         self.agents = dict()
@@ -300,7 +297,7 @@ class Executive(object):
         self.executiveVisualizationTopic = executiveVisualizationTopic
 
         self.agglPath = agglPath
-        if not self.doNotPlan:
+        if self.doNotPlan is not True:
             self.domainParsed = self.parsed = AGMFileDataParsing.fromFile(self.agglPath)
 
 
@@ -319,7 +316,7 @@ class Executive(object):
         self.setAndBroadcastModel(xmlModelParser.graphFromXMLFile(initialModelPath))
         self.worldModelICE = AGMModelConversion.fromInternalToIce(self.currentModel)
 
-        if not self.doNotPlan:
+        if self.doNotPlan is not True:
             self.plannerCaller = PlannerCaller(self, agglPath, self.startPlanServer)
             self.plannerCaller.start()
             print('--- setMission ---------------------------------------------')
@@ -390,7 +387,8 @@ class Executive(object):
                 sys.exit(-1)
             # Force replanning
             try:
-                if not (avoidReplanning or self.doNotPlan):
+                print("Replaning", avoidReplanning, self.doNotPlan)
+                if (avoidReplanning is False) or (self.doNotPlan is False):
                     self.updatePlan()
             except:
                 print(traceback.print_exc())
@@ -508,7 +506,7 @@ class Executive(object):
         self.executiveTopic.selfEdgeDeleted(identifier, edge_type)
 
     def setMission(self, target, avoidUpdate=False):
-        if self.doNotPlan:
+        if self.doNotPlan is True:
             return
         self.mutex.acquire()
         self.targetStr = target
@@ -578,7 +576,7 @@ class Executive(object):
 
 
     def updatePlan(self):
-        if self.doNotPlan:
+        if self.doNotPlan is True:
             return
         self.plannerCaller.setWork(self.currentModel)
 

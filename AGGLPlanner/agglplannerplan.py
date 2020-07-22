@@ -185,7 +185,7 @@ class AGGLPlannerPlan(object):
 	# @retval a string with the information of the plan graph.
 	def __repr__(self):
 		## The plan graph
-		return self.graph.__str__()
+		return self.data.__str__()
 
 	##@brief this method returns a string with the data array information.
 	# @retval ret is the string with all the data
