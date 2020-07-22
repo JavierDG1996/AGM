@@ -1,4 +1,4 @@
-import sys, traceback, Ice, subprocess, threading, time, queue, os, time
+import sys, traceback, Ice, subprocess, threading, time, Queue, os, time
 import IceStorm
 
 # AGM
@@ -308,6 +308,7 @@ class Executive(object):
         try:
             self.initialModel = xmlModelParser.graphFromXMLFile(initialModelPath)
         except Exception as e:
+            print(e)
             print('Can\'t open ' + initialModelPath + '.')
             os._exit(-1)
 

@@ -19,7 +19,7 @@
 #    along with AGM.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import sys, traceback, Ice, subprocess, threading, time, queue, os
+import sys, traceback, Ice, subprocess, threading, time, Queue, os
 import IceStorm
 
 
