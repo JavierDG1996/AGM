@@ -7,7 +7,7 @@ try:
 except:
 	pass
 if len(ROBOCOMP)<1:
-	print 'ROBOCOMP environment variable not set! Exiting.'
+	print('ROBOCOMP environment variable not set! Exiting.')
 	sys.exit()
 
 preStr = "-I"+ROBOCOMP+"/interfaces/ --all "+ROBOCOMP+"/interfaces/"
@@ -23,7 +23,7 @@ def fromInternalToIce(src):
 	dst = RoboCompAGMWorldModel.World(nodes=[], edges=[], version=0)
 	dst.version = int(src.version)
 	## Copy indices
-	for nodeSrc in src.nodes.values():
+	for nodeSrc in list(src.nodes.values()):
 		nodeDst = RoboCompAGMWorldModel.Node()
 		nodeDst.nodeType = nodeSrc.sType
 		try:
@@ -31,7 +31,7 @@ def fromInternalToIce(src):
 		except:
 			nodeDst.nodeIdentifier = -1
 		if nodeDst.nodeIdentifier == -1:
-			print "Can't transform models containing nodes with invalid identifiers (type: " + nodeDst.nodeType + ").\n"
+			print("Can't transform models containing nodes with invalid identifiers (type: " + nodeDst.nodeType + ").\n")
 			sys.exit(-1)
 		nodeDst.attributes = nodeSrc.attributes
 		dst.nodes.append(nodeDst)
@@ -45,14 +45,14 @@ def fromInternalToIce(src):
 		except:
 			dstLink.a = -1
 		if dstLink.a == -1:
-			print "Can't transform models containing edges linking invalid identifiers (type: "+dstLink.edgeType+").\n"
+			print("Can't transform models containing edges linking invalid identifiers (type: "+dstLink.edgeType+").\n")
 			sys.exit(-1)
 		try:
 			dstLink.b = int(srcLink.b)
 		except:
 			dstLink.b = -1
 		if dstLink.b == -1:
-			print "Can't transform models containing edges linking invalid identifiers (type: "+dstLink.edgeType+").\n"
+			print("Can't transform models containing edges linking invalid identifiers (type: "+dstLink.edgeType+").\n")
 			sys.exit(-1)
 
 		dstLink.attributes = srcLink.attributes

@@ -68,7 +68,7 @@ class AGMLink(object):
 		elif type(self.attributes) == type({}):
 			self.attributes = attrs
 		else:
-			print 'Wrong value for AGMLink() [attrs is not a dictionary]', type(attrs)
+			print('Wrong value for AGMLink() [attrs is not a dictionary]', type(attrs))
 			sys.exit(-1358)
 
 		if linkType == 'RT':
@@ -200,7 +200,7 @@ class AGMGraph(object):
 	def __repr__(self):
 		return self.__str__()
 	def __cmp__(self):
-		print 'AGMGraph cmp(self)'
+		print('AGMGraph cmp(self)')
 		return object.__cmp__(self)
 	def __hash__(self):
 		return (len(self.nodes), len(self.links))
@@ -368,7 +368,7 @@ class AGMGraph(object):
 		elif name == '':
 			pass
 		else:
-			print 'No such node', str(name)+'. Internal editor error.'
+			print('No such node', str(name)+'. Internal editor error.')
 			pass
 
 	def addEdge(self, a, b, linkname='link', attrs=None):
@@ -498,7 +498,7 @@ class AGMRule(object):
 		'''Rules often use virtual types which can correspond to different actual types. Since learning in AGM uses the types of the objects we
  		can differentiate between the probability of use of any given rule with the different possible types with which the rule can be used.
 		This method is used to generate all the possible concrete-type-rules associated with a rule '''
-		print 'RULE', self.name
+		print('RULE', self.name)
 		### 1 Generate a dictionary without empty entries
 		inverseTypes = copy.deepcopy(inv)
 		# 1.a Remove the type itself from the list of children
@@ -522,14 +522,14 @@ class AGMRule(object):
 		if len(toModifyId) == 0:
 			return [self]
 		changes = [ inverseTypes2[x] for x in toModifyTy]
-		print '-------------------'
+		print('-------------------')
 		### 3 Generate derivate rules
 		ret = []
 		for i in itertools.product(*changes):
 			if len(set(i)) > 1:                             # THIS IS THE GENERALLY DESIRED BEHAVIOUR, BUT IT MIGHT NOT BE IN THE FUTURE. THE LANGUAGE MUST BUG ERROR  FIXME ERROR
 				continue                                    # TAKE THIS INTO ACCOUNT (THE VARIABLE TYPES MAY DIFFER AMONG THEMSELVES BUG ERROR  FIXME ERROR BUG ERROR  FIXME ERROR)
 			change = zip(toModifyId, i)
-			print 'Generate copy', change
+			print('Generate copy', change)
 			log = ''
 			derivate = copy.deepcopy(self)
 			for atomicChange in change:
@@ -538,11 +538,11 @@ class AGMRule(object):
 					for node in graph.nodes:
 						if node == atomicChange[0]:
 							graph.nodes[node].sType = atomicChange[1]
-			print derivate.lhs
-			print derivate.rhs
+			print(derivate.lhs)
+			print(derivate.rhs)
 			derivate.name += log
 			ret.append(derivate)
-		print '-------------------'
+		print('-------------------')
 		return ret
 	def forgetNodesList(self):
 		return list(set(self.lhs.nodes).difference(set(self.rhs.nodes)))
@@ -613,7 +613,7 @@ class AGMHierarchicalRule(AGMRule):
 		'''Rules often use virtual types which can correspond to different actual types. Since learning in AGM uses the types of the objects we
  		can differentiate between the probability of use of any given rule with the different possible types with which the rule can be used.
 		This method is used to generate all the possible concrete-type-rules associated with a rule '''
-		print 'RULE', self.name
+		print('RULE', self.name)
 		### 1 Generate a dictionary without empty entries
 		inverseTypes = copy.deepcopy(inv)
 		# 1.a Remove the type itself from the list of children
@@ -637,12 +637,12 @@ class AGMHierarchicalRule(AGMRule):
 		if len(toModifyId) == 0:
 			return [self]
 		changes = [ inverseTypes2[x] for x in toModifyTy]
-		print '-------------------'
+		print('-------------------')
 		### 3 Generate derivate rules
 		ret = []
 		for i in itertools.product(*changes):
 			change = zip(toModifyId, i)
-			print 'Generate copy', change
+			print('Generate copy', change)
 			log = ''
 			derivate = copy.deepcopy(self)
 			for atomicChange in change:
@@ -651,11 +651,11 @@ class AGMHierarchicalRule(AGMRule):
 					for node in graph.nodes:
 						if node == atomicChange[0]:
 							graph.nodes[node].sType = atomicChange[1]
-			print derivate.lhs
-			print derivate.rhs
+			print(derivate.lhs)
+			print(derivate.rhs)
 			derivate.name += log
 			ret.append(derivate)
-		print '-------------------'
+		print('-------------------')
 		return ret
 
 
@@ -684,7 +684,7 @@ class AGM(object):
 				return i
 	def addType(self, t, rhs=[]):
 		if t in self.types.keys():
-			print "type", t, "already defined"
+			print("type", t, "already defined")
 		allRHSinDic = True
 		allParents = rhs
 		# print 'lalala', t, rhs
@@ -692,7 +692,7 @@ class AGM(object):
 		for parent in rhs:
 			if not parent in self.types.keys():
 				allRHSinDic = False
-				print "type", parent, "not defined"
+				print("type", parent, "not defined")
 				break
 			else:
 				allParents += self.types[parent]
@@ -711,12 +711,12 @@ class AGM(object):
 				newDict[k] = l
 		return newDict
 	def renameType(self, t, nt):
-		print 'types', self.types
-		print 'direct', self.typesDirect
+		print('types', self.types)
+		print('direct', self.typesDirect)
 		self.types = self.renameInDict(self.types, t, nt)
 		self.typesDirect = self.renameInDict(self.typesDirect, t, nt)
-		print 'types', self.types
-		print 'direct', self.typesDirect
+		print('types', self.types)
+		print('direct', self.typesDirect)
 		self.computeInverseTypes()
 	def modifyType(self, t, parents=[]):
 		allRHSinDic = True
@@ -725,7 +725,7 @@ class AGM(object):
 		for parent in parents:
 			if not parent in self.types.keys():
 				allRHSinDic = False
-				print "type", parent, "not defined"
+				print("type", parent, "not defined")
 				break
 			else:
 				allParents += self.types[parent]
