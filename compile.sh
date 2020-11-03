@@ -2,8 +2,7 @@
 
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 
-echo "Installing dependencies..."
-sudo apt-get install libxml2-dev python-pip
+
 
 # Should we compile with RoboComp support?
 finished=""
