@@ -3,11 +3,7 @@
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 
 echo "Installing dependencies..."
-sudo apt-get install libxml2-dev
-
-wget https://bootstrap.pypa.io/get-pip.py
-sudo pypy get-pip.py
-sudo pypy -m pip install thriftpy
+sudo apt-get install libxml2-dev python-pip
 
 # Should we compile with RoboComp support?
 finished=""
