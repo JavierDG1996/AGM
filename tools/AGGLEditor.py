@@ -33,7 +33,7 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from PySide.QtSvg import *
 
-import Image, ImageOps
+from PIL import Image, ImageOps
 import numpy as np
 
 from inspect import currentframe, getframeinfo

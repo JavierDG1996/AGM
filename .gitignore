@@ -29,3 +29,19 @@ testagm
 tools/agminner/bin/
 tools/agmmission/bin/
 
+
+tmp/
+
+get-pip.py
+
+get-pip.py.1
+
+get-pip.py.2
+
+get-pip.py.3
+
+targetCode.py
+
+targetText.txt
+
+thriftpy
