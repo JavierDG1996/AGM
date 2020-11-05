@@ -27,6 +27,7 @@ RUN export uid=1000 gid=1000 && \
 RUN sudo apt-get install -y gcc python-pyparsing python-pyside pyside-tools libpython2.7-dev python-dev libboost-all-dev cmake python-pil python-numpy pypy cython libgsl-dev libopenscenegraph-dev pypy-setuptools python-setuptools libxml2-dev python-pygraphviz python-networkx pypy-dev python-thrift libqt4-dev libboost-all-dev pyside-tools uuid-dev
 RUN sudo apt-get -y install libxml2-dev python-pip
 USER robolab
+ARG AGM_VER=unknown
 RUN git clone https://github.com/ljmanso/AGM.git
 RUN git clone https://github.com/eleme/thriftpy.git
 RUN git clone https://bitbucket.org/pypy/numpy.git
