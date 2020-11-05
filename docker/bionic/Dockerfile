@@ -10,7 +10,7 @@ LABEL description="This is custom Docker Image for Robocomp in Ubuntu Focal"
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Update Ubuntu Software repository
-RUN apt update && apt install -y sudo
+RUN apt update && apt install -y sudo vim
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -33,6 +33,8 @@ RUN git clone https://bitbucket.org/pypy/numpy.git
 USER root
 RUN cd thriftpy && pypy setup.py install && make clean && python setup.py install
 RUN cd numpy && pypy setup.py install
+RUN echo "/usr/local/lib/" >> /etc/ld.so.conf
+RUN ldconfig
 USER robolab
 ENV HOME /home/robolab/
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:AGM
@@ -41,5 +43,5 @@ RUN export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:AGM
 RUN export HOME=/home/robolab/
 # Installing agm
 RUN cd AGM && mkdir -p build
-RUN cd AGM/build && pwd && cmake .. -DROBOCOMP_SUPPORT=True -DPYTHON_BINDINGS=False && make -j4 && sudo make install
+RUN cd AGM/build && pwd && cmake .. -DROBOCOMP_SUPPORT=True -DPYTHON_BINDINGS=False && make -j1 && sudo make install
 
