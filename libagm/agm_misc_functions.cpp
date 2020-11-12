@@ -104,6 +104,19 @@ void AGMMisc::publishEdgesUpdate(std::vector<AGMModelEdge> edges, AGMExecutivePr
 	agmexecutive->edgesUpdate(edge_sequence);
 }
 
+
+void AGMMisc::publishSelfEdgeAdded(int32_t identifier, std::string edgeType,std::map<std::string, std::string> attributes, AGMExecutivePrx &agmexecutive)
+{
+
+    agmexecutive->addSelfEdge(identifier, edgeType, attributes);
+
+}
+void AGMMisc::publishSelfEdgeDeleted(int32_t identifier, std::string edgeType, AGMExecutivePrx &agmexecutive)
+{
+    agmexecutive->delSelfEdge(identifier, edgeType);
+}
+
+
 #endif
 
 
