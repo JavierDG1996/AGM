@@ -482,6 +482,7 @@ class Executive(object):
         finally:
             self.mutex.release()
         self.executiveTopic.selfEdgeAdded(identifier, edge_type, attributes)
+        self.updatePlan()
 
 
     def delSelfEdge(self, identifier, edge_type):
@@ -504,6 +505,7 @@ class Executive(object):
         finally:
             self.mutex.release()
         self.executiveTopic.selfEdgeDeleted(identifier, edge_type)
+        self.updatePlan()
 
     def setMission(self, target, avoidUpdate=False):
         if self.doNotPlan is True:
