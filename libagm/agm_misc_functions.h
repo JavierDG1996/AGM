@@ -47,6 +47,10 @@ public:
 	static void publishEdgeUpdate(AGMModelEdge &edge, AGMExecutivePrx &agmexecutive);
 	/*! Modifies several edges (<em>edge</em>) using the proxy <em>AGMExecutive</em>. */
 	static void publishEdgesUpdate(std::vector<AGMModelEdge> edges, AGMExecutivePrx &agmexecutive);
+
+    static void publishSelfEdgeAdded(int32_t identifier, std::string edgeType,std::map<std::string, std::string> attributes, AGMExecutivePrx &agmexecutive);
+    static void publishSelfEdgeDeleted(int32_t identifier, std::string edgeType, AGMExecutivePrx &agmexecutive);
+
 #endif
 	static inline float str2float(const std::string &s, bool debug = false);
 	static inline int32_t str2int(const std::string &s);
