@@ -132,6 +132,7 @@ class PlannerCaller(threading.Thread):
         #print 'PlannerCaller::setWork 1'
         self.working = True
         self.currentModel = currentModel
+        print('here ZDFERGw')
         # End
         self.plannerCallerMutex.release()
 
@@ -464,7 +465,7 @@ class Executive(object):
                             found = True
                             break
             if not found:
-                self.currentModel.links.append(AGMLink(str(identifier), str(identifier), attributes))
+                self.currentModel.links.append(AGMLink(str(identifier), str(identifier), edge_type, attributes))
             found = False
             for i in range(len(self.worldModelICE.edges)):
                 if str(self.worldModelICE.edges[i].a) == str(identifier):
@@ -482,6 +483,7 @@ class Executive(object):
         finally:
             self.mutex.release()
         self.executiveTopic.selfEdgeAdded(identifier, edge_type, attributes)
+        print('self edge ADDED')
         self.updatePlan()
 
 
@@ -505,6 +507,7 @@ class Executive(object):
         finally:
             self.mutex.release()
         self.executiveTopic.selfEdgeDeleted(identifier, edge_type)
+        printf('self edge DELETED')
         self.updatePlan()
 
     def setMission(self, target, avoidUpdate=False):
@@ -580,6 +583,7 @@ class Executive(object):
     def updatePlan(self):
         if self.doNotPlan is True:
             return
+        print('inside updatePlan()')
         self.plannerCaller.setWork(self.currentModel)
 
     def gotPlan(self, plan):
