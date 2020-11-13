@@ -501,13 +501,12 @@ class Executive(object):
                 if str(self.worldModelICE.edges[i].a) == str(identifier):
                     if str(self.worldModelICE.edges[i].b) == str(identifier):
                         if str(self.worldModelICE.edges[i].edgeType) == str(edge_type):
-                            self.worldModelICE.edges[i].attributes = copy.deepcopy(attributes)
                             del self.worldModelICE.edges[i]
                             break
         finally:
             self.mutex.release()
         self.executiveTopic.selfEdgeDeleted(identifier, edge_type)
-        printf('self edge DELETED')
+        print('self edge DELETED')
         self.updatePlan()
 
     def setMission(self, target, avoidUpdate=False):
