@@ -162,7 +162,7 @@ WRAP_PYTHON_QRC( resource )
 #  Library building  #
 ######################
 add_library(agm SHARED ${AGM_CODE} ${XMLVIEWER3D_MOCS} )
-target_link_libraries(agm ${LIBS} ${PYTHON_LIBRARIES} ${OSG_LIBS} ${QT_LIBRARIES} ${Boost_LIBRARIES} )
+target_link_libraries(agm ${LIBS} ${PYTHON_LIBRARIES} ${OSG_LIBS} ${QT_LIBRARIES} ${Boost_LIBRARIES} -linnermodel )
 
 if (ROBOCOMP_SUPPORT)
    add_library(agmdummy SHARED AGMWorldModel.cpp AGMExecutive.cpp AGMCommonBehavior.cpp Planning.cpp )
