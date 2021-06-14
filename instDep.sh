@@ -1,13 +1,10 @@
 #!/usr/bin/sh
 
-sudo apt-get install --yes gcc python-pyparsing python-pyside pyside-tools libpython2.7-dev python-dev libboost-all-dev cmake python-pil python-numpy pypy cython libgsl-dev libopenscenegraph-dev pypy-setuptools python-setuptools libxml2-dev python-pygraphviz python-networkx pypy-dev python-thrift libqt4-dev libboost-all-dev pyside-tools uuid-dev
-echo "Installing dependencies..."
-sudo apt-get -y install libxml2-dev python-pip
-git clone https://github.com/eleme/thriftpy.git
-cd thriftpy
-sudo pypy setup.py install
-sudo make clean
-sudo python setup.py install
-git clone https://bitbucket.org/pypy/numpy.git
-cd numpy
-sudo pypy setup.py install
+sudo apt-get install --yes gcc python3-pyparsing libpyside2-dev pyside2-tools libpython3-dev python3-dev libboost-all-dev cmake python3-pil python3-numpy pypy3 cython libgsl-dev libopenscenegraph-dev python3-setuptools libxml2-dev python3-pygraphviz python3-networkx pypy3-dev python3-thrift libboost-all-dev uuid-dev qtbase5-dev qttools5-dev-tools python3-thriftpy libxml2-dev python3-pip
+
+
+wget https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+pypy3 get-pip.py
+
+sudo pypy3 -m pip install thriftpy
+sudo pypy3 -m pip install numpy
