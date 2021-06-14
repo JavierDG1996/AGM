@@ -30,6 +30,7 @@ done
 PYTHON_BINDINGS="False"
 
 
+export SLICE_PATH=/home/robocomp/AGM/
 
 
 mkdir -p build
