@@ -41,7 +41,7 @@ SET (HEADER_FILES
   ${CMAKE_SOURCE_DIR}/libagm/agm_config.h
   ${CMAKE_SOURCE_DIR}/libagm/agm_plan.h
   ${CMAKE_SOURCE_DIR}/libagm/agm_inner.h
-  ${CMAKE_SOURCE_DIR}/libagm/graphModelViewer.h
+  #  ${CMAKE_SOURCE_DIR}/libagm/graphModelViewer.h
 )
 #  Show enabled optional features  #
 ####################################
@@ -99,11 +99,11 @@ if (ROBOCOMP_SUPPORT)
 	SET(ICE_LIBS -lIce)
 	ROBOCOMP_WRAP_ICE( AGMWorldModel AGMExecutive Planning AGMCommonBehavior )
 	ADD_DEFINITIONS(-DROBOCOMP_SUPPORT=1)
-	SUBDIRS (
-		${CMAKE_SOURCE_DIR}/tools/agmmission
-		tools/agminner
-		tools/agmagentsim
-    )
+	#	SUBDIRS (
+	#	${CMAKE_SOURCE_DIR}/tools/agmmission
+	#	tools/agminner
+	#	tools/agmagentsim
+	#)
 endif (ROBOCOMP_SUPPORT)
 
 # LibXML
@@ -137,7 +137,7 @@ MACRO( WRAP_PYTHON_UI )
   FOREACH( input_file ${ARGN} )
     ADD_CUSTOM_COMMAND (
       OUTPUT                                                              ${CMAKE_BINARY_DIR}/ui_${input_file}.py
-      COMMAND pyside-uic ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.ui -o ${CMAKE_BINARY_DIR}/ui_${input_file}.py
+      COMMAND pyside2-uic ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.ui -o ${CMAKE_BINARY_DIR}/ui_${input_file}.py
       DEPENDS            ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.ui
       COMMENT "Generating ${CMAKE_BINARY_DIR}/ui_${input_file}.py from ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.ui"
     )
@@ -148,7 +148,7 @@ MACRO( WRAP_PYTHON_QRC )
   FOREACH( input_file ${ARGN} )
     ADD_CUSTOM_COMMAND (
       OUTPUT                                                               ${CMAKE_BINARY_DIR}/${input_file}_rc.py
-      COMMAND pyside-rcc ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.qrc -o ${CMAKE_BINARY_DIR}/${input_file}_rc.py
+      COMMAND pyside2-rcc ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.qrc -o ${CMAKE_BINARY_DIR}/${input_file}_rc.py
       DEPENDS            ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.qrc
       COMMENT "Generating ${CMAKE_BINARY_DIR}/${input_file}_rc.py from ${CMAKE_SOURCE_DIR}/tools/ui/${input_file}.qrc"
     )

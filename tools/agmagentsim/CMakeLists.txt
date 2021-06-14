@@ -16,7 +16,7 @@ MACRO( WRAP_PYTHON_UI )
   
     ADD_CUSTOM_COMMAND (
       OUTPUT ${uiof}
-      COMMAND pyside-uic ${uiif} -o ${uiof}
+      COMMAND pyside2-uic ${uiif} -o ${uiof}
       DEPENDS ${uiif}
       COMMENT "Generating ${uiof} from ${uiif}"
     )
