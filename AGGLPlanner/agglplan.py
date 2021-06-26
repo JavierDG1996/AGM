@@ -51,7 +51,7 @@ if __name__ == '__main__': # program domain problem result
 	# If there aren't all the arguments, we show an error mesage with how to use the program.
 	# If there are all the arguments, we keep them in local variables.
 	if len(sys.argv)<4:
-		print 'Usage\n\t', sys.argv[0], ' domain.aggl init.xml target.aggt [result.plan]'
+		print ('Usage\n\t', sys.argv[0], ' domain.aggl init.xml target.aggt [result.plan]')
 	else:
 		## the file that contains the grammar rules
 		domainFile = sys.argv[1]
@@ -64,7 +64,7 @@ if __name__ == '__main__': # program domain problem result
 		if len(sys.argv)>4:
 			result = sys.argv[4]
 
-		print '\nGenerating search code...'
+		print ('\nGenerating search code...')
 
 		## Generate domain Python file <--- like aggl2agglpy.
 		# agmData is a variable of AGMFileData class, in AGGL.py file.
@@ -88,7 +88,7 @@ if __name__ == '__main__': # program domain problem result
 
 		# Run planner
 		import time
-		print 'done\nRunning the planner...'
+		print ('done\nRunning the planner...')
 		## We store the initial or start time of the planner and call the agglplaner, the main program that makes all the process...
 		start = time.time()
 		if result:
@@ -97,4 +97,4 @@ if __name__ == '__main__': # program domain problem result
 			subprocess.call(["agglplanner", domainFile, "/tmp/domain.py", worldFile, "/tmp/target.py"])
 		## We store the final time of the planner to calculate the total duration of the program
 		end = time.time()
-		print 'It took', end - start, 'seconds'
+		print ('It took', end - start, 'seconds')

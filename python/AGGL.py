@@ -669,6 +669,7 @@ class AGM(object):
 		self.rules = []
 		self.types = {}
 		self.typesDirect = {}
+		self.inverseTypes = {}
 	def addRule(self, rule):
 		self.rules.append(rule)
 	def planarCopy(self):

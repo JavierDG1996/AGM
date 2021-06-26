@@ -97,7 +97,7 @@ class AGGLPlannerPlan(object):
 								a = AGGLPlannerAction(line)
 								self.data.append(a)
 							except:
-								print 'Error reading plan file', init+". Line", str(line_i)+": <<"+line+">>"
+								print ('Error reading plan file', init+". Line", str(line_i)+": <<"+line+">>")
 			# If the string hasnt got anything, we dont apply any rule:
 			else:
 				pass
@@ -114,7 +114,7 @@ class AGGLPlannerPlan(object):
 				# we make a copy of the plan
 				self.data = copy.deepcopy(init.data)
 			else:
-				print 'Unknown plan type ('+str(type(init))+')! (internal error)'
+				print ('Unknown plan type ('+str(type(init))+')! (internal error)')
 				sys.exit(-321)
 
 	def getAlreadyDecomposedHierarchicalActionNamesList(self):
@@ -245,7 +245,7 @@ class WorldStateHistory(object):
 			self.stop = False
 			self.score = 0
 		else:
-			print 'Internal errorr: Cannot create WorldStateHistory from unexpected object of type', str(type(init))
+			print ('Internal errorr: Cannot create WorldStateHistory from unexpected object of type', str(type(init)))
 			sys.exit(1)
 
 	##@brief This method compares two graphs.

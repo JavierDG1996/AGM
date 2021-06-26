@@ -74,15 +74,15 @@ class AGGLPlanChecker(object):
 		self.verbose = verbose
 	def run(self):
 		# Apply plan
-		if self.verbose: print "AGGLPlanChecker applying plan"
+		if self.verbose: print ("AGGLPlanChecker applying plan")
 		try:
 			world = copy.deepcopy(self.initWorld) # we copy the initial world status.
 			#if self.verbose: print world
 			line = 0 # This is the actions line counter. It keeps track of the lines of actions contained in a plan
-			if self.verbose: print '<<plan\n', self.plan, '\nplan>>'
+			if self.verbose: print ('<<plan\n', self.plan, '\nplan>>')
 			# We check all the actions in a plan.
 			for action in self.plan:
-				if self.verbose: print 'Executing action', line,' ',action
+				if self.verbose: print ('Executing action', line,' ',action)
 				line += 1
 				# We check that the actions parameters are into the world.
 				for p in action.parameters.keys():
@@ -96,39 +96,39 @@ class AGGLPlanChecker(object):
 							raise WrongRuleExecution("Parameter '"+action.parameters[p]+"' (variable '"+p+"') doesn't exist in the current world model.")
 				world = self.domain.getTriggers()[action.name](world, action.parameters, checked=False, verbose=self.verbose)
 				if self.verbose:
-					print 'result:'
-					print world
+					print ('result:')
+					print (world)
 				#world.graph.toXML('after_plan_step'+str(line)+".xml")
 
-			if self.verbose: print 'Done executing actions. Let\'s see what we\'ve got (computing score and checking if the goal was achieved).'
+			if self.verbose: print ('Done executing actions. Let\'s see what we\'ve got (computing score and checking if the goal was achieved).')
 			# Get result
 			score, achieved, ignore = self.target(world.graph) # , symbolMapping
 			## We store the result to check the plan
 			self.valid = achieved
 			if achieved:               # On the one hand, if we achieve the target world status, we will print all the  correct actions of the plan.
-				if self.verbose: print 'GOAL ACHIEVED'
+				if self.verbose: print ('GOAL ACHIEVED')
 				self.achieved = True
 				if self.verbose:
 					for action in self.plan:
-						print action
+						print (action)
 			else:                      # Otherwise, if we dont achieve the goal, we will print an error message.
 				self.achieved = False
-				if self.verbose: print 'Not achieved (didn\'t get to the goal)'
+				if self.verbose: print ('Not achieved (didn\'t get to the goal)')
 
 		# If we have thrown an exception (because a parameter of an action does not exist),
 		# we handle part of the exception in this code.
-		except WrongRuleExecution, e:
-			if self.verbose: print 'Invalid rule execution', action
-			if self.verbose: print 'Rule: ', e
-			if self.verbose: print 'Line: ', line
-			if self.verbose: print 'Not achieved'
+		except (WrongRuleExecution, e):
+			if self.verbose: print ('Invalid rule execution', action)
+			if self.verbose: print ('Rule: ', e)
+			if self.verbose: print ('Line: ', line)
+			if self.verbose: print ('Not achieved')
 			self.valid = False
 			self.achieved = False
 			if self.verbose: traceback.print_exc()
 		except:
 			self.valid = False
 			self.achieved = False
-			if self.verbose: print 'Not achieved (error)'
+			if self.verbose: print ('Not achieved (error)')
 			if self.verbose: traceback.print_exc()
 		return world.graph
 
@@ -140,7 +140,7 @@ class AGGLPlanChecker(object):
 # " Usage
 #   PROGRAM_NAME domain.[py/aggl] init.xml plan.plan target.[py/xml] [result.xml]
 def printUsage():
-	print 'Usage\n\t', sys.argv[0], ' domain.[py/aggl] init.xml plan.plan target.[py/xml]   [result.xml]'
+	print ('Usage\n\t', sys.argv[0], ' domain.[py/aggl] init.xml plan.plan target.[py/xml]   [result.xml]')
 	sys.exit(0)
 
 
@@ -174,7 +174,7 @@ if __name__ == '__main__': # program domain problem result
 		domain = "/tmp/domain.py"
 	# If the domain file doesnt finish with the correct extension, we will show an error message
 	elif not domain.endswith('.py'):
-		print "Domain extension must be 'py' or 'aggl'"
+		print ("Domain extension must be 'py' or 'aggl'")
 		printUsage()
 
 
@@ -185,7 +185,7 @@ if __name__ == '__main__': # program domain problem result
 	#    a python file was prodived
 	# c) Python code is imported as a module and the CheckTarget function is used
 	if target.endswith('.xml'):
-		print 'XML targets are not supported anymore. Use AGGT files.'
+		print ('XML targets are not supported anymore. Use AGGT files.')
 		printUsage()
 	# If the target file doesnt end with the cirrect extension, we will show an error message.
 	elif target.endswith('.aggt'):
@@ -195,10 +195,10 @@ if __name__ == '__main__': # program domain problem result
 	elif target.endswith('.py'):
 		target = open(target, 'r').read()
 	else:
-		print "Target extension must be 'py' or 'aggt'"
+		print ("Target extension must be 'py' or 'aggt'")
 		printUsage()
 	m = imp.new_module('targetModule')
-	exec target in m.__dict__
+	exec (target) in m.__dict__
 	target = m.CheckTarget
 
 	# Generate a WorldStateHistory from the initital XML file

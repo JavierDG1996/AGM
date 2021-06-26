@@ -38,8 +38,7 @@
 
 import time
 #import signal
-import thread
-
+import threading
 #signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 import sys, traceback, os, re, threading, time, string, math, copy
@@ -116,7 +115,7 @@ class EndCondition(object):
 		## Status of the class --> the status of the final condition
 		self.status = status
 		## The lock for read and write the status
-		self.lock = thread.allocate_lock()
+		self.lock = threading.RLock()
 
 	##@brief Get Method. This method returns the status of the class. To do this, the method needs
 	# to lock the other threads. This method reads a critical variable.
@@ -140,19 +139,19 @@ class EndCondition(object):
 ##@brief This method prints on the screen all the information of the new graph: the cost,
 # the score, the number of actions and the names of the actions.
 def printResult(result):
-	print '-----  R  E  S  U  L  T  S  -----'
+	print ('-----  R  E  S  U  L  T  S  -----')
 	if verbose > 0:
-		print 'Cost', result.cost
-		print 'Score', result.score
+		print ('Cost', result.cost)
+		print ('Score', result.score)
 		l = 0
 		for action in result.history:
 			if not (action[0] == '#' and action[1] != '!'):
 				l += 1
-		print 'Length', l
-		print 'Actions\n----------------'
+		print ('Length', l)
+		print ('Actions\n----------------')
 	for action in result.history:
 		#if action[0] != '#':
-		print action
+		print (action)
 
 ##@brief This is a class that implements a lockable list.
 class LockableList():
@@ -319,7 +318,7 @@ if __name__ == '__main__': # program domain problem result
 		t0 = time.time()
 
 		if len(sys.argv)<5:
-			print 'Usage\n\t', sys.argv[0], ' domain.aggl activeRules.py init.xml target.xml.py [result.plan] [input_hierarchical.plan]'
+			print ('Usage\n\t', sys.argv[0], ' domain.aggl activeRules.py init.xml target.xml.py [result.plan] [input_hierarchical.plan]')
 
 		else:
 			domainAGM = AGMFileDataParsing.fromFile(sys.argv[1]) #From domain.aggl
@@ -335,7 +334,7 @@ if __name__ == '__main__': # program domain problem result
 			targetCode = imp.load_source('modeeeule__na_me', targetPath).CheckTarget
 			p = AGGLPlanner(domainAGM, domainRuleSet, initPath, targetCode, '', dict(), [], resultFile)
 			p.run()
-		print 'Total time: ', (time.time()-t0).__str__()
+		print ('Total time: ', (time.time()-t0).__str__())
 
 
 
@@ -353,11 +352,11 @@ class DomainInformation(object):
 		self.module = self.getModuleFromText(self.plannerCode).RuleSet()
 	def getModuleFromText(self, moduleText):
 		if len(moduleText) < 10:
-			print 'len(moduleText) < 10'
+			print ('len(moduleText) < 10')
 			os._exit(-1)
 		m = imp.new_module('domainModule'+str(self.identifier))
 		try:
-			exec moduleText in m.__dict__
+			exec (moduleText) in m.__dict__
 		except:
 			open("dede", 'w').write(moduleText)
 		return m
@@ -371,10 +370,10 @@ class TargetInformation(object):
 		self.module = self.getModuleFromText(self.code).CheckTarget
 	def getModuleFromText(self, moduleText):
 		if len(moduleText) < 10:
-			print 'len(moduleText) < 10'
+			print ('len(moduleText) < 10')
 			os._exit(-1)
 		m = imp.new_module('targetModule'+str(self.identifier))
-		exec moduleText in m.__dict__
+		exec (moduleText) in m.__dict__
 		return m
 
 
@@ -415,7 +414,7 @@ class AGGLPlanner(object):
 		elif isinstance(initWorld,WorldStateHistory):
 			self.initWorld = copy.deepcopy(initWorld)
 		else:
-			print type(initWorld)
+			print (type(initWorld))
 			os._exit(1)
 		self.initWorld.nodeId = 0
 		# Set rule and trigger maps
@@ -442,7 +441,7 @@ class AGGLPlanner(object):
 		self.externalStopFlag = LockableInteger(0)
 
 	def setStopFlag(self):
-		print 'got setStopFlag (internal class)'
+		print ('got setStopFlag (internal class)')
 		self.externalStopFlag.set(1)
 
 	def run(self):
@@ -465,7 +464,7 @@ class AGGLPlanner(object):
 		self.end_condition = EndCondition()
 		# We save in the list of the open nodes, the initial status of the world
 		self.openNodes.heapqPush((0, copy.deepcopy(self.initWorld)))
-		if verbose>1 and indent=='': print 'INIT'.ljust(20), self.initWorld
+		if verbose>1 and indent=='': print ('INIT'.ljust(20), self.initWorld)
 
 		# Create initial state
 		if self.symbol_mapping:
@@ -482,7 +481,7 @@ class AGGLPlanner(object):
 			if self.indent == '':
  				self.end_condition.set("GoalAchieved")
 		elif number_of_threads>0:
-			print "Using multiple threads is not currently supported"
+			print ("Using multiple threads is not currently supported")
 			# But, if the goal is not achieved and there are more than 0 thread running (1, 2...)
 			# we creates a list where we will save the status of all the threads, take all
 			# the threads (with their locks) and save it in the thread_locks list.
@@ -513,23 +512,23 @@ class AGGLPlanner(object):
 		#	-- or the end condition doesnt have any message
 		# we print the correspond message
 		if self.end_condition.get() == "IndexError":
-			if verbose > 0: print 'End: state space exhausted (known', len(self.knownNodes), ' (open', len(self.openNodes)
+			if verbose > 0: print ('End: state space exhausted (known', len(self.knownNodes), ' (open', len(self.openNodes))
 		elif self.end_condition.get() == "MaxCostReached":
-			if verbose > 0: print 'End: max cost reached'
+			if verbose > 0: print ('End: max cost reached')
 		elif self.end_condition.get() == "BestSolutionFound":
-			if verbose > 0: print 'End: best solution found'
+			if verbose > 0: print ('End: best solution found')
 		elif self.end_condition.get() == "GoalAchieved":
-			if self.indent == '' and verbose > 0: print 'End: goal achieved'
+			if self.indent == '' and verbose > 0: print ('End: goal achieved')
 		elif self.end_condition.get() == "TimeLimit":
-			if verbose > 0: print 'End: TimeLimit'
+			if verbose > 0: print ('End: TimeLimit')
 		elif self.end_condition.get() == 'ExternalFlag':
-			if verbose > 0: print 'End: External stop flag set'
+			if verbose > 0: print ('End: External stop flag set')
 			return AGGLPlannerPlan("__stopped__@{}\n", planFromText=True)
 		elif self.end_condition.get() == None:
-			if verbose > 0: print 'NDD:DD:D:EWJRI', self.end_condition, self
+			if verbose > 0: print ('NDD:DD:D:EWJRI', self.end_condition, self)
 		else:
-			print 'UNKNOWN ERROR'
-			print self.end_condition.get()
+			print ('UNKNOWN ERROR')
+			print (self.end_condition.get())
 
 ##
 ##
@@ -541,7 +540,7 @@ class AGGLPlanner(object):
 					min_idx = i
 			i = min_idx
 
-			if self.indent=='' and verbose > 0: print 'Got', len(self.results), 'plans!'
+			if self.indent=='' and verbose > 0: print ('Got', len(self.results), 'plans!')
 
 			try:
 				plann = AGGLPlannerPlan([xx.split('@') for xx in self.results[i].history])
@@ -553,20 +552,20 @@ class AGGLPlanner(object):
 						check = agglplanchecker.AGGLPlanChecker(self.domainParsed, self.domainModule, self.initWorld, n, self.targetCode, self.symbol_mapping, verbose=False)
 						check.run()
 					except:
-						print 'Excepction!!'
+						print ('Excepction!!')
 						traceback.print_exc()
 						break
 					if check.achieved:
-						print  '  (removed)', self.results[i].history[0]
+						print  ('  (removed)', self.results[i].history[0])
 						self.results[i].history = self.results[i].history[1:]
 						plann = copy.deepcopy(n)
 					else:
-						print  '  (not removed)', self.results[i].history[0]
+						print  ('  (not removed)', self.results[i].history[0])
 						break
 				if self.decomposing==False:
-					print 'ORIGINAL PLAN: ', self.results[i].cost
+					print ('ORIGINAL PLAN: ', self.results[i].cost)
 					for action in self.results[i].history:
-						print '    ', action
+						print ('    ', action)
 			except:
 				traceback.print_exc()
 				pass
@@ -586,11 +585,11 @@ class AGGLPlanner(object):
 									found = True
 									break
 						if not found:
-							#print 'removing fixed goal symbol', param
+							#print ('removing fixed goal symbol', param)
 							del paramsWithoutNew[param]
 							#paramsWithoutNew[param] = str('v')+str(paramsWithoutNew[param])
-					#print paramsWithoutNew
-					print '\nDecomposing hierarchical rule ', ac.name, paramsWithoutNew
+					#print (paramsWithoutNew)
+					print ('\nDecomposing hierarchical rule ', ac.name, paramsWithoutNew)
 					""" We create an temporary state, without all the nodes created by the hierarchical rule"""
 					estadoIntermedio = self.triggerMap[ac.name](self.initWorld, ac.parameters)
 					""" We remove the constants created by the hierarchical rule, making them variables."""
@@ -615,7 +614,7 @@ class AGGLPlanner(object):
 
 					self.results[i].history = self.results[i].history[1:] # The following two lines append a '#!' string to the first action (which is the hierarchical action thas has been decomposed)
 					self.results[i].history.insert(0, '#!'+str(ac))
-					print self.results[i].history
+					print (self.results[i].history)
 					if len(aaa.results.getList()) == 0:
 						del self.results[:]
 					else:
@@ -641,19 +640,19 @@ class AGGLPlanner(object):
 				except:
 					finalPlan = AGGLPlannerPlan(retText, planFromText=True)
 				if self.decomposing == False:
-					print 'FINAL PLAN WITH: ', len(finalPlan), ' ACTIONS:'
+					print ('FINAL PLAN WITH: ', len(finalPlan), ' ACTIONS:')
 					for action in finalPlan:
-						print '    ', action
+						print ('    ', action)
 						if self.resultFile != None:
 							self.resultFile.write(str(action)+'\n')
 					if self.resultFile != None:
 						self.resultFile.write("# time: " + str(self.timeElapsed) + "\n")
 
 				return finalPlan
-			if self.indent=='' and verbose > 0: print "----------------\nExplored", self.explored.get(), "nodes"
+			if self.indent=='' and verbose > 0: print ("----------------\nExplored", self.explored.get(), "nodes")
 
 		if len(self.results)==0: # If the length of the list is zero, it means that we have not found a plan.
-			if verbose > 0: print 'No plan found.'
+			if verbose > 0: print ('No plan found.')
 ##
 ##
 ##
@@ -751,7 +750,7 @@ class AGGLPlanner(object):
 			# For each action in the domain (for k in ruleMap) we generate the possible nodes of the state space that can
 			# be reached from the state described in 'head'.
 			#
-			if verbose>5: print 'Expanding'.ljust(5), head
+			if verbose>5: print ('Expanding'.ljust(5), head)
 			# The dictionary 'ruleMap' contains the python implementation of the actions in the domain.
   			# For each action 'k', in the domain:
 			for k in ruleMap:
@@ -795,7 +794,7 @@ class AGGLPlanner(object):
 					doIt = True
 				if doIt:
 					self.lastTime = nowNow
-					print str(int(self.timeElapsed)).zfill(10)+','+str(len(self.openNodes))+','+str(len(self.knownNodes))+','+str(head.score)
+					print (str(int(self.timeElapsed)).zfill(10)+','+str(len(self.openNodes))+','+str(len(self.knownNodes))+','+str(head.score))
 
 
 	def updateCheapestSolutionCostAndCutOpenNodes(self, cost):
