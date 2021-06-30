@@ -57,11 +57,11 @@ if __name__ == '__main__': # program domain problem result
 				return l[idx+1]
 		return None
 	def showHelp():
-		print 'Usage\n\t', sys.argv[0], 'domain.aggl init.xml target.aggt [-o result.plan] [-l learning_algorithm[:data_file]]\n'
-		print '-l    The learning algorithm can be one of the following (case insensitive): None, NaiveBayes, DummySemantics, LinearRegression, DNN.'
-		print '      If no learning method is provided agglplan used "None" as default option.\n'
-		print '-o    Optional file path to store the computed plan. Optional argument.\n'
-		print ''
+		print ('Usage\n\t', sys.argv[0], 'domain.aggl init.xml target.aggt [-o result.plan] [-l learning_algorithm[:data_file]]\n')
+		print ('-l    The learning algorithm can be one of the following (case insensitive): None, NaiveBayes, DummySemantics, LinearRegression, DNN.')
+		print ('      If no learning method is provided agglplan used "None" as default option.\n')
+		print ('-o    Optional file path to store the computed plan. Optional argument.\n')
+		print ('')
 		sys.exit(-1)
 	# We check if the program was run with all necessary arguments.
 	# If there aren't all the arguments, we show an error mesage with how to use the program.
@@ -88,17 +88,17 @@ if __name__ == '__main__': # program domain problem result
 			showHelp()
 		trainList = trainFile.split(':')
 		trainMethod = trainList[0].lower()
-		print 'trainMethod', trainMethod
+		print ('trainMethod', trainMethod)
 		validMethods = [ 'none', 'naivebayes', 'dummysemantics', 'linearregression', 'dnn' ]
 		if not trainMethod in validMethods:
-			print 'ERROR:', trainMethod, 'not in the list of known learning methods: None, NaiveBayes, DummySemantics, LinearRegression, DNN\n'
+			print ('ERROR:', trainMethod, 'not in the list of known learning methods: None, NaiveBayes, DummySemantics, LinearRegression, DNN\n')
 			showHelp()
 		trainList2 = [trainList[0].lower()]
 		if len(trainList)>1:
 			trainList2 += trainList[1:]
 		trainFile = ':'.join(trainList2)
-		print 'learning_algorithm:',trainFile
-		print '\nGenerating search code...'
+		print ('learning_algorithm:',trainFile)
+		print ('\nGenerating search code...')
 		## Generate domain Python file <--- like aggl2agglpy.
 		# agmData is a variable of AGMFileData class, in AGGL.py file.
 		# First: we CHECK the grammar. Is a parseAGGL.py's class
@@ -123,13 +123,13 @@ if __name__ == '__main__': # program domain problem result
 
 		# Run planner
 		import time
-		print 'done\nRunning the planner...'
+		print ('done\nRunning the planner...')
 		## We store the initial or start time of the planner and call the agglplaner, the main program that makes all the process...
 		start = time.time()
 
 
-		print 'RESULT', result
-		print 'TRAINN', trainFile
+		print ('RESULT', result)
+		print ('TRAINN', trainFile)
 
 		if result:
 			subprocess.call(["agglplanner2", domainFile, "/tmp/domain.py", worldFile, "/tmp/target.py", trainFile, result])
@@ -137,4 +137,4 @@ if __name__ == '__main__': # program domain problem result
 			subprocess.call(["agglplanner2", domainFile, "/tmp/domain.py", worldFile, "/tmp/target.py", trainFile])
 		## We store the final time of the planner to calculate the total duration of the program
 		end = time.time()
-		print 'It took', end - start, 'seconds'
+		print ('It took', end - start, 'seconds')
