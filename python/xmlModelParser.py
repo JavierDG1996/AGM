@@ -1,18 +1,21 @@
-import xmllib, string, sys
+import string, sys
+import xml.etree.ElementTree as ET 
+#import xmllib
 
 sys.path.append('/usr/local/share/agm/')
 from AGGL import *
 
-class AGMWorldModelParser(xmllib.XMLParser):
+class AGMWorldModelParser(ET.XMLParser):
 	def __init__(self, data):
-		xmllib.XMLParser.__init__(self)
+		#xmllib.XMLParser.__init__(self)
+		ET.XMLParser.__init__(self)
 		self.world = False
 		self.currentSymbol = None
 
 		self.nodes = dict()
 		self.links = list()
-
-		self.feed(data)
+		#self.feed(data)
+		ET.XMLParser.feed(self, data)
 
 	def handle_data(self, data):
 		pass

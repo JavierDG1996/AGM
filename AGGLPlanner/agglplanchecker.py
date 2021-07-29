@@ -117,9 +117,9 @@ class AGGLPlanChecker(object):
 
 		# If we have thrown an exception (because a parameter of an action does not exist),
 		# we handle part of the exception in this code.
-		except (WrongRuleExecution, e):
+		except (WrongRuleExecution):
 			if self.verbose: print ('Invalid rule execution', action)
-			if self.verbose: print ('Rule: ', e)
+			#if self.verbose: print ('Rule: ', e)
 			if self.verbose: print ('Line: ', line)
 			if self.verbose: print ('Not achieved')
 			self.valid = False

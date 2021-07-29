@@ -46,7 +46,7 @@ from generateAGGLPlannerCode import *
 from agglplanner2 import *
 from agglplanchecker import *
 # from generate import Generate
-from agglplanner2_utils import *
+import agglplanner2_utils
 
 
 
@@ -109,7 +109,7 @@ if __name__ == '__main__': # program domain problem result
 		## Generate target Python file.
 		if targetFile.lower().endswith('.aggt'):
 			theTarget = AGMFileDataParsing.targetFromFile(targetFile)
-			agglplanner2_utils.groundAutoTypesInTarget(theTarget, worldFile)
+			agglplanner2_utils.groundAutoTypesInTarget(theTarget, worldFile) 
 			outputText = generateTarget_AGGT(agmData, theTarget)
 		else:
 			# This sentence creates a graph based on the target world status

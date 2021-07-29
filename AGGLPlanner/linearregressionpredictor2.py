@@ -13,12 +13,12 @@ class LinearRegressionPredictor2(object):
 		try:
 			f = open(pickleFile, 'r')
 		except IOError:
-			print 'agglplanner error: Could not open', pickleFile
+			print ('agglplanner error: Could not open', pickleFile)
 		# print str.split(' ', 1 )
 		self.coeff, self.intercept, self.xHeaders, self.yHeaders = pickle.load(f)
 		self.coeff = np.array(self.coeff)
 		self.intercept = np.array(self.intercept)
-		print '--------------------------------------------------------------------'
+		print ('--------------------------------------------------------------------')
 		self.prdDictionary = setInverseDictionaryFromList(self.xHeaders)
 		self.actDictionary = setInverseDictionaryFromList(self.yHeaders)
 
@@ -68,26 +68,26 @@ class LinearRegressionPredictor2(object):
 
 
 def generateLinearRegressionMatricesFromDomainAndPlansDirectory2(domain, data, outX, outY):
-	print '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Reading domain'
+	print ('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Reading domain')
 	domainAGM = AGMFileDataParsing.fromFile(domain)
 
-	print '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Generating prdsHeader'
+	print ('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Generating prdsHeader')
 	prdDictionary = getPredicateDictionary(domainAGM)
 	prdsHeader=range(len(prdDictionary))
 	for x in prdDictionary:
 		prdsHeader[prdDictionary[x]] = x
-	print prdsHeader
+	print (prdsHeader)
 
 
-	print '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Generating actsHeader'
+	print ('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Generating actsHeader')
 	actDictionary = getActionDictionary(domainAGM)
 	actsHeader=range(len(actDictionary))
 	for x in actDictionary:
 		actsHeader[actDictionary[x]] = x
-	print actsHeader
+	print (actsHeader)
 
 
-	print '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Gathering data from stored files'
+	print ('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Gathering data from stored files')
 	lim = -1
 	n = 0
 	for (dirpath, dirnames, filenames) in os.walk(data):
@@ -110,10 +110,10 @@ def generateLinearRegressionMatricesFromDomainAndPlansDirectory2(domain, data, o
 								elif plan.endswith('plan2'):
 									yi = outputVectorFromPlan(planLines, actDictionary, factor=0.5)
 								else:
-									print 'plan which is not .pddl or .plan'
+									print ('plan which is not .pddl or .plan')
 									sys.exit(-3)
 							except KeyError:
-								print 'Non existent action in', plan
+								print ('Non existent action in', plan)
 								continue
 							try:
 								data_y = np.concatenate( (data_y, yi), axis=0)
@@ -133,24 +133,24 @@ def generateLinearRegressionMatricesFromDomainAndPlansDirectory2(domain, data, o
 									data_x = xi # traceback.print_exc()
 								n += 1
 								if n%100 == 0:
-									print n, 'generateLinearRegressionMatricesFromDomainAndPlansDirectory2'
+									print (n, 'generateLinearRegressionMatricesFromDomainAndPlansDirectory2')
 								if n == lim:
-									print 'wiiiiiiiiiii'
+									print ('wiiiiiiiiiii')
 									break
 							except KeyError:
-								print 'KeyError _ ', plan
+								print ('KeyError _ ', plan)
 								traceback.print_exc()
 			if n == lim:
 				break
 		if n == lim:
 			break
 
-	print 'x', np.sum(data_x)
-	print data_x.shape
+	print ('x', np.sum(data_x))
+	print (data_x.shape)
 	# print data_x
 
-	print 'y', np.sum(data_y)
-	print data_y.shape
+	print ('y', np.sum(data_y))
+	print (data_y.shape)
 	# print data_y
 
 
