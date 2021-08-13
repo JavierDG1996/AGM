@@ -604,7 +604,7 @@ class AGGLPlanner(object):
                     estadoIntermedio = self.triggerMap[ac.name](self.initWorld, ac.parameters)
                     """ We remove the constants created by the hierarchical rule, making them variables."""
                     graph = setNewConstantsAsVariables(self.initWorld.graph, estadoIntermedio.graph)
-                    outputText = generateTarget(self.domainParsed, graph)
+                    #outputText = generateTarget(self.domainParsed, graph)
                     """ The following flag is set so the planning of the hierarchical rule is shown on screen"""
                     firstActionIsHierarchical = True
                     hierarchicalTarget = self.domainModule.getHierarchicalTargets()[ac.name]

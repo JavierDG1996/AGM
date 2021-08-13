@@ -73,17 +73,13 @@ if __name__ == '__main__': # program domain problem result
         # and we write the grammar in a python file.
         agmData = AGMFileDataParsing.fromFile(domainFile)
         agmData.generateAGGLPlannerCode("/tmp/domain.py", skipPassiveRules=True)
-
+        #Trabajo pendiente aquí: eliminar el if y la parte del else.
         ## Generate target Python file.
         if targetFile.lower().endswith('.aggt'):
             outputText = generateTarget_AGGT(agmData, AGMFileDataParsing.targetFromFile(targetFile))
-        else:
-            # This sentence creates a graph based on the target world status
-            graph = parsingxml(targetFile)
-            print('xml graph',graph,'xx')
-            sys.stdout.flush()
-            ## Generate the python code correspondig to the graph and
-            outputText = generateTarget(agmData, graph)
+        else :
+            print("Solo se soporta AGGT")
+            sys.exit(0)
         ## Save the python code of the target world status in the file target.py.
         ofile = open("/tmp/target.py", 'w')
         ofile.write(outputText)
