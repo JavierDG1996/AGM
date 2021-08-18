@@ -9,6 +9,7 @@
 #  A free/libre open source AI planner.
 #
 #  Copyright (C) 2013 - 2017 by Luis J. Manso
+#  Last Modification: Fernando Martín Ramos : 13/08/2021
 #
 #  AGGLPlanner is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -409,11 +410,11 @@ class AGGLPlanner(object):
         # Get initial world model
         print(initWorld)
         if isinstance(initWorld,unicode) or isinstance(initWorld,str):
-            if '<AGMModel>' in initWorld:
+            if '<AGMModel>' in initWorld: #Old parsing system for parse directly XML strings. Shouldnt work in python 3.
                 self.initWorld = WorldStateHistory([xmlModelParser.graphFromXMLText(initWorld), domainParsed.getInitiallyAwakeRules()|awakenRules])
-            elif initWorld.endswith('.json'):
+            elif initWorld.endswith('.json'): #If the file is JSON, we parse it with the new functionality for JSON
                 self.initWorld = WorldStateHistory([py3JSONparser.parsingJSON(initWorld), domainParsed.getInitiallyAwakeRules()|awakenRules])
-            else:
+            else: #If the file is XML, parse it using the new method, all defined in the new file py3xmlparser
                 self.initWorld = WorldStateHistory([py3xmlparser.parsingxml(initWorld), domainParsed.getInitiallyAwakeRules()|awakenRules])
                 
                 

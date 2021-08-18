@@ -10,6 +10,8 @@
 #
 #  Copyright (C) 2013 by Luis J. Manso
 #
+#  Last Modification: Fernando Martín Ramos : 13/08/2021
+#
 #  AGGLPlanner is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -97,3 +99,4 @@ if __name__ == '__main__': # program domain problem result
         ## We store the final time of the planner to calculate the total duration of the program
         end = time.time()
         print ('It took', end - start, 'seconds')
+        
