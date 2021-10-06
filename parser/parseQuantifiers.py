@@ -33,7 +33,7 @@ class AGGLCodeParsing:
 
 	@staticmethod
 	def parseFormula(text, verbose=False):
-		if verbose: print 'Verbose:', verbose
+		if verbose: print ('Verbose:', verbose)
 		# Basic elements
 		ids     = Word(srange("[a-zA-Z0-9_]"))
 		po      = Suppress("(")

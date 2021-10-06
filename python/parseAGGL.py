@@ -93,10 +93,10 @@ class AGMGraphParsing:
 	def parseGraphFromAST(i, verbose=False):
 		if type(i) == str:
 			return AGMGraph(dict(), [])
-		if verbose: print '\t{'
+		if verbose: print ('\t{')
 		nodes = dict()
 		for t in i.nodes:
-			if verbose: print '\tT: \'' + str(t.symbol) + '\' is a \'' + t.symbolType + '\' (' + t.x, ',', t.y + ')'
+			if verbose: print ('\tT: \'' + str(t.symbol) + '\' is a \'' + t.symbolType + '\' (' + t.x, ',', t.y + ')')
 			pos = [0,0]
 			try:
 				multiply = 1.
@@ -109,11 +109,11 @@ class AGMGraphParsing:
 			nodes[t.symbol] = AGMSymbol(t.symbol, t.symbolType, pos)
 		links = []
 		for l in i.links:
-			if verbose: print '\t\tL:', l.lhs, '->', l.rhs, '('+l.no, l.linkType+') ['+l.enabled+']'
+			if verbose: print ('\t\tL:', l.lhs, '->', l.rhs, '('+l.no, l.linkType+') ['+l.enabled+']')
 			lV = True
 			if len(l.enabled)>0: lV = False
 			links.append(AGMLink(l.lhs, l.rhs, l.linkType, enabled=lV))
-		if verbose: print '\t}'
+		if verbose: print ('\t}')
 		return AGMGraph(nodes, links)
 
 
@@ -134,7 +134,7 @@ class AGMRuleParsing:
 		elif i.passive == 'active':
 			passive = False
 		else:
-			print 'Error parsing rule', i.name+':', i.passive, 'is not a valid active/passive definition only "active" or "passive".'
+			print ('Error parsing rule', i.name+':', i.passive, 'is not a valid active/passive definition only "active" or "passive".')
 			sys.exit(-345)
 		# activates
 		activates = []
@@ -159,9 +159,9 @@ class AGMRuleParsing:
 		elif len(i.atomss)==0: # We are dealing with a normal rule!
 			#print 'Normal rule:', i.name
 			# We are dealing with a normal rule!
-			if verbose: print '\nRule:', i.name
+			if verbose: print ('\nRule:', i.name)
 			LHS = AGMGraphParsing.parseGraphFromAST(i.lhs, verbose)
-			if verbose: print '\t===>'
+			if verbose: print ('\t===>')
 			RHS = AGMGraphParsing.parseGraphFromAST(i.rhs, verbose)
 			regular = AGMRule(i.name, LHS, RHS, passive, i.cost, i.success, parameters, precondition, effect, dormant=dormant, activates=activates)
 			if len(i.conditions) > 0:
@@ -195,7 +195,7 @@ class AGMFileDataParsing:
 	# It returns agmFD, a variable with the grammar file, the properties, symbols and rules of the grammar.
 	@staticmethod
 	def fromText(input_text, verbose=False, includeIncludes=True):
-		if verbose: print 'Verbose:', verbose
+		if verbose: print ('Verbose:', verbose)
 		# Clear previous data
 		agmFD = AGMFileData()
 		agmFD.properties = dict()
@@ -208,15 +208,15 @@ class AGMFileDataParsing:
 		# Parse input file
 		inputText = "\n".join([line for line in input_text.split("\n") if not line.lstrip(" \t").startswith('#')])
 		result = agglMetaModels['aggl'].parseWithTabs().parseString(inputText)
-		if verbose: print "Result:\n",result
+		if verbose: print ("Result:\n",result)
 
 		# Fill AGMFileData and AGM data
-		if verbose: print '\nProperties:', len(result.props)
+		if verbose: print ('\nProperties:', len(result.props))
 		number = 0
 		gotName = False
 		strings = ['name', 'fontName']
 		for i in result.props:
-			if verbose: print '\t('+str(number)+') \''+str(i.prop)+'\' = \''+i.value+'\''
+			if verbose: print ('\t('+str(number)+') \''+str(i.prop)+'\' = \''+i.value+'\'')
 			if i.prop in strings:
 				agmFD.properties[i.prop] = str(i.value)
 				if i.prop == 'name': gotName = True
@@ -227,14 +227,14 @@ class AGMFileDataParsing:
 					try:
 						agmFD.properties[i.prop] = int(float(i.value))
 					except:
-						print 'This is not a valid (or float)', i.value
+						print ('This is not a valid (or float)', i.value)
 			number += 1
 		if not gotName:
-			print 'drats! no name'
+			print ('drats! no name')
 
 		#verbose=True
 		#verbose=False
-		if verbose: print '\nRules:', len(result.rules)
+		if verbose: print ('\nRules:', len(result.rules))
 		number = 0
 		for i in result.rules:
 			if i.includefile:
@@ -255,7 +255,7 @@ class AGMFileDataParsing:
 							doneInclude = True
 							break
 					if not doneInclude:
-						print 'Couldn\' find', i.includefile, 'in any of the configured paths:', paths
+						print ('Couldn\' find', i.includefile, 'in any of the configured paths:', paths)
 						raise Exception('Couldn\' find '+str(i.includefile)+' in any of the configured paths: '+str(paths))
 			else:
 				preconditionRec = None
@@ -343,83 +343,83 @@ class AGMFileDataParsing:
 	@staticmethod
 	def interpretPrecondition(tree, pre=''):
 		if tree.type == "not":
-			if debug: print pre+'not'
-			n = AGMFileDataParsing.interpretPrecondition(tree.child, pre+"\t")
+			if debug: print (pre+'not')
+			n = AGMFileDataParsing.interprettPrecondition(tree.child, pre+"\t")
 			return ["not", n]
 		elif tree.type == "or":
-			if debug: print pre+'or'
+			if debug: print (pre+'or')
 			r = []
 			for i in tree.more:
 				r.append(AGMFileDataParsing.interpretPrecondition(i, pre+"\t"))
 			return ["or", r]
 		elif tree.type == "and":
-			if debug: print pre+'and'
+			if debug: print (pre+'and')
 			r = []
 			for i in tree.more:
 				r.append(AGMFileDataParsing.interpretPrecondition(i, pre+"\t"))
 			return ["and", r]
 		elif tree.type == "forall":
-			if debug: print pre+'forall'
-			if debug: print pre+'\t',
+			if debug: print (pre+'forall')
+			if debug: print (pre+'\t',)
 			for i in tree.vars:
-				if debug: print pre+str(i),
-			if debug: print ''
+				if debug: print (pre+str(i),)
+			if debug: print ('')
 			effect = AGMFileDataParsing.interpretPrecondition(tree.child, pre+"\t")
 			ret = ["forall", [[str(x.var), str(x.t)] for x in tree.vars], effect]
 			return ret
 		elif tree.type == "when":
-			if debug: print pre+'when'
-			if debug: print pre+'\tif'
+			if debug: print (pre+'when')
+			if debug: print (pre+'\tif')
 			iff = AGMFileDataParsing.interpretPrecondition(tree.iff, pre+"\t\t")
-			if debug: print pre+'\tthen'
+			if debug: print (pre+'\tthen')
 			then = AGMFileDataParsing.interpretPrecondition(tree.then, pre+"\t\t")
 			return ["when", iff, then]
 		elif tree.type == "=":
-			if debug: print pre+'='
+			if debug: print (pre+'=')
 			return ["=", tree.a, tree.b]
 		else:
-			if debug: print pre+"link <"+tree.type+"> between <"+tree.a+"> and <"+tree.b+">"
+			if debug: print (pre+"link <"+tree.type+"> between <"+tree.a+"> and <"+tree.b+">")
 			return [tree.type, tree.a, tree.b]
 
 
 	@staticmethod
 	def interpretEffect(tree, pre=''):
 		if tree.type == "not":
-			if debug: print pre+'not'
+			if debug: print (pre+'not')
 			n = AGMFileDataParsing.interpretEffect(tree.child, pre+"\t")
 			return ["not", n]
 		elif tree.type == "or":
-			if debug: print pre+'or'
+			if debug: print (pre+'or')
 			r = []
 			for i in tree.more:
 				r.append(AGMFileDataParsing.interpretEffect(tree.child, pre+"\t"))
 			return ["or", r]
 		elif tree.type == "and":
-			if debug: print pre+'and'
+			if debug: print (pre+'and')
 			r = []
 			for i in tree.more:
 				r.append(AGMFileDataParsing.interpretEffect(i, pre+"\t"))
 			return ["and", r]
 		elif tree.type == "forall":
-			if debug: print pre+'forall'
-			if debug: print pre+'\t',
+			if debug: print (pre+'forall')
+			if debug: print (pre+'\t',)
 			for i in tree.vars:
-				if debug: print pre+str(i),
-			if debug: print ''
+				if debug: print (pre+str(i),)
+			if debug: print ('')
 			effect = AGMFileDataParsing.interpretEffect(tree.child, pre+"\t")
 			return ["forall", [[str(x.var), str(x.t)] for x in tree.vars], effect]
 		elif tree.type == "when":
-			if debug: print pre+'when'
-			if debug: print pre+'\tif'
+			if debug: print (pre+'when')
+			if debug: print (pre+'\tif')
 			iff = AGMFileDataParsing.interpretEffect(tree.iff, pre+"\t\t")
-			if debug: print pre+'\tthen'
+			if debug: print (pre+'\tthen')
 			then = AGMFileDataParsing.interpretEffect(tree.then, pre+"\t\t")
 			return ["when", iff, then]
 		elif tree.type == "=":
-			if debug: print pre+'='
+			if debug: print (pre+'=')
 			return ["=", tree.a, tree.b]
 		else:
-			if debug: print pre+"link <"+tree.type+"> between <"+tree.a+"> and <"+tree.b+">"
+			if debug: print (pre+"link <"+tree.type+"> between <"+tree.a+"> and <"+tree.b+">")
 			return [tree.type, tree.a, tree.b]
 
 

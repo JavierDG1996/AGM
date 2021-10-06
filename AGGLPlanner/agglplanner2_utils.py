@@ -13,5 +13,5 @@ def groundAutoTypesInTarget(target, world):
 					if node == nodeCheck:
 						target["graph"].nodes[node].sType = world.nodes[nodeCheck].sType
 			except ValueError: # Ok, if the node is not a constant, we should fail
-				print 'Found an \'auto\' symbol type for a symbol which is not a constant'
+				print ('Found an \'auto\' symbol type for a symbol which is not a constant')
 				sys.exit(-1)

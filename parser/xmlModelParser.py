@@ -1,11 +1,12 @@
-import xmllib, string, sys
+import xml.etree.ElementTree as ET 
+import string, sys
 
 sys.path.append('/usr/local/share/agm/')
 from AGGL import *
 
-class AGMWorldModelParser(xmllib.XMLParser):
+class AGMWorldModelParser(ET.XMLParser):
 	def __init__(self, data):
-		xmllib.XMLParser.__init__(self)
+		ET.XMLParser.__init__(self)
 		self.world = False
 		self.currentSymbol = None
 
@@ -21,14 +22,14 @@ class AGMWorldModelParser(xmllib.XMLParser):
 		if not self.world:
 			self.world = True
 		else:
-			print 'errorrr'
+			print ('errorrr')
 			sys.exit(-1)
 
 	def end_AGMModel(self):
 		if self.world:
 			self.world = False
 		else:
-			print 'errorrr'
+			print ('errorrr')
 			sys.exit(-1)
 
 	def start_symbol(self, attrs):
@@ -47,10 +48,10 @@ class AGMWorldModelParser(xmllib.XMLParser):
 		src = attrs['src']
 		dst = attrs['dst']
 		if not src in self.nodes:
-			print 'No src node', src
+			print ('No src node', src)
 			sys.exit(-1)
 		if not dst in self.nodes:
-			print 'No dst node', dst
+			print ('No dst node', dst)
 			sys.exit(-1)
 		enabled = False
 

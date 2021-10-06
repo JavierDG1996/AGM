@@ -1,0 +1,9 @@
+{
+        objectR:object(0,0)
+        objectH:object(0,0)
+        statusR:status(0,0)
+        statusH:status(0,0)
+        objectR->objectH (eq)
+        objectR->statusR(has)
+        objectH->statusH(has)
+}
