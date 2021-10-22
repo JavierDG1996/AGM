@@ -344,7 +344,7 @@ class AGMFileDataParsing:
 	def interpretPrecondition(tree, pre=''):
 		if tree.type == "not":
 			if debug: print (pre+'not')
-			n = AGMFileDataParsing.interprettPrecondition(tree.child, pre+"\t")
+			n = AGMFileDataParsing.interpretPrecondition(tree.child, pre+"\t")
 			return ["not", n]
 		elif tree.type == "or":
 			if debug: print (pre+'or')
