@@ -656,8 +656,8 @@ class AGGLPlanner(object):
                         print ('    ', action)
                         if self.resultFile != None:
                             self.resultFile.write(str(action)+'\n')
-                    if self.resultFile != None:
-                        self.resultFile.write("# time: " + str(self.timeElapsed) + "\n")
+                    #if self.resultFile != None:
+                    #    self.resultFile.write("# time: " + str(self.timeElapsed) + "\n")
 
                 return finalPlan
             if self.indent=='' and verbose > 0: print ("----------------\nExplored", self.explored.get(), "nodes")
